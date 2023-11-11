@@ -7,7 +7,7 @@
   "workspaces": {
     "packages": [
       "api",
-      "web"
+      "frontend"
     ],
     "nohoist": [
       "**"
