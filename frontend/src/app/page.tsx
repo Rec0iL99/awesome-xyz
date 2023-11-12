@@ -6,5 +6,5 @@ export default function Home() {
       <Text>Hello from Radix Themes :)</Text>
       <Button>Let's go</Button>
     </Flex>
-  )
+  );
 }

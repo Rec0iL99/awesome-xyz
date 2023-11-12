@@ -17,13 +17,18 @@
   "author": "Rec0iL99",
   "license": "ISC",
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prettier": "prettier --check ./frontend/src ./api/src",
+    "prettier:write": "prettier --write ./frontend/src ./api/src"
   },
   "devDependencies": {
     "@eslint/js": "^8.53.0",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   }
 }
