@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+cd api
+yarn check-types
+
+cd ../frontend
+yarn check-types
+
+cd ..
+npx lint-staged
