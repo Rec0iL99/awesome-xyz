@@ -20,8 +20,8 @@
     "prepare": "husky install",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prettier": "prettier --check ./frontend/src ./api/src",
-    "prettier:write": "prettier --write ./frontend/src ./api/src",
+    "prettier": "prettier --check ./api/src ./common/src ./frontend/src",
+    "prettier:write": "prettier --write ./api/src ./common/src ./frontend/src",
     "commit": "git-cz"
   },
   "devDependencies": {
