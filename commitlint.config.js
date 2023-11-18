@@ -8,6 +8,6 @@ export default {
    * Any rules defined here will override rules from @commitlint/config-conventional
    */
   rules: {
-    "scope-enum": [2, "always", ["global", "api", "frontend"]],
+    "scope-enum": [2, "always", ["global", "api", "frontend", "common"]],
   },
 };

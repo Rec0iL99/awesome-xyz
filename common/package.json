@@ -1,0 +1,17 @@
+{
+  "name": "@awesome-xyz/common",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "tsc -w",
+    "check-types": "tsc --pretty --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tsconfig.json": "^1.0.11"
+  }
+}
