@@ -4,6 +4,9 @@
 cd api
 yarn check-types
 
+cd ../common
+yarn check-types
+
 cd ../frontend
 yarn check-types
 
