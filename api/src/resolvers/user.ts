@@ -47,6 +47,6 @@ export class UserResolver {
 
     console.log("githubUser: ", githubUser);
 
-    const user = await User.findOne({ where: { username: githubUser.login } });
+    // const user = await User.findOne({ where: { username: githubUser.login } });
   }
 }
