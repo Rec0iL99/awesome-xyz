@@ -1,3 +1,3 @@
-import { type GitHubUser } from "./types/types";
+import { GitHubUser } from "./types/types";
 
 export { GitHubUser };

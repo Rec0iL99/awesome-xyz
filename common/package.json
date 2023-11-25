@@ -2,7 +2,9 @@
   "name": "@awesome-xyz/common",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "private": true,
   "scripts": {
     "watch": "tsc -w",
     "check-types": "tsc --pretty --noEmit",
