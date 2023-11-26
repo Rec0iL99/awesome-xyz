@@ -1,7 +1,34 @@
-import { Arg, Field, Mutation, ObjectType, Resolver } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Field,
+  InputType,
+  Mutation,
+  ObjectType,
+  Resolver,
+} from "type-graphql";
 import { User } from "../entities/User";
 import { GitHubUser } from "@awesome-xyz/common";
 import superagent from "superagent";
+import { MyContext } from "src/types/types";
+
+@InputType()
+class RegisterUserInput {
+  @Field()
+  username: string;
+
+  @Field()
+  name: string;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String)
+  githubProfile: string;
+
+  @Field()
+  avatarUrl: string;
+}
 
 @ObjectType()
 class FieldError {
@@ -20,8 +47,11 @@ class GitHubUserResponse {
   @Field()
   name: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   email: string;
+
+  @Field(() => String)
+  githubProfile: string;
 
   @Field()
   avatarUrl: string;
@@ -53,7 +83,9 @@ export class UserResolver {
   @Mutation(() => AuthResponse)
   async auth(
     @Arg("githubCode")
-    code: string
+    code: string,
+    @Ctx()
+    { req }: MyContext
   ): Promise<AuthResponse> {
     const accessTokenResponse = await superagent
       .post("https://github.com/login/oauth/access_token")
@@ -81,13 +113,61 @@ export class UserResolver {
           email: githubUser.email,
           name: githubUser.name,
           username: githubUser.login,
+          githubProfile: githubUser.html_url,
         },
       };
     }
+
+    req.session.userId = user.id;
 
     return {
       isRegistered: true,
       user,
     };
+  }
+
+  @Mutation(() => UserResponse)
+  async register(
+    @Arg("options")
+    options: RegisterUserInput,
+    @Ctx()
+    { dataSource, req }: MyContext
+  ): Promise<UserResponse> {
+    // TODO: valider options before registering
+
+    let user;
+
+    try {
+      const result = await dataSource
+        .createQueryBuilder()
+        .insert()
+        .into(User)
+        .values({
+          avatarUrl: options.avatarUrl,
+          email: options.email,
+          githubProfile: options.githubProfile,
+          name: options.name,
+          username: options.username,
+        })
+        .returning("*")
+        .execute();
+
+      user = result.raw[0];
+    } catch (error) {
+      if (error.code === "23505") {
+        return {
+          errors: [
+            {
+              field: "username",
+              message: "Username already exists. Please try another one.",
+            },
+          ],
+        };
+      }
+    }
+
+    req.session.userId = user.id;
+
+    return { user };
   }
 }
