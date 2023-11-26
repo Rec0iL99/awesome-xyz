@@ -1,5 +1,6 @@
 import { Arg, Field, Mutation, ObjectType, Resolver } from "type-graphql";
 import { User } from "../entities/User";
+import { GitHubUser } from "@awesome-xyz/common";
 import superagent from "superagent";
 
 @ObjectType()
@@ -12,6 +13,21 @@ class FieldError {
 }
 
 @ObjectType()
+class GitHubUserResponse {
+  @Field()
+  username: string;
+
+  @Field()
+  name: string;
+
+  @Field(() => String, { nullable: true })
+  email: string;
+
+  @Field()
+  avatarUrl: string;
+}
+
+@ObjectType()
 class UserResponse {
   @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
@@ -20,13 +36,25 @@ class UserResponse {
   user?: User;
 }
 
+@ObjectType()
+class AuthResponse {
+  @Field(() => Boolean)
+  isRegistered: boolean;
+
+  @Field(() => GitHubUserResponse, { nullable: true })
+  githubUser?: GitHubUserResponse;
+
+  @Field(() => User, { nullable: true })
+  user?: User;
+}
+
 @Resolver(User)
 export class UserResolver {
-  @Mutation(() => UserResponse)
+  @Mutation(() => AuthResponse)
   async auth(
     @Arg("githubCode")
     code: string
-  ) {
+  ): Promise<AuthResponse> {
     const accessTokenResponse = await superagent
       .post("https://github.com/login/oauth/access_token")
       .send({
@@ -42,11 +70,24 @@ export class UserResolver {
       .set("Authorization", `token ${githubAccessToken}`)
       .set("User-Agent", "grupo");
 
-    // TODO: make this from type GithubUser from @awesome-xyz/common
-    const githubUser = await githubUserResponse.body;
+    const githubUser: GitHubUser = await githubUserResponse.body;
 
-    console.log("githubUser: ", githubUser);
+    const user = await User.findOne({ where: { username: githubUser.login } });
+    if (!user) {
+      return {
+        isRegistered: false,
+        githubUser: {
+          avatarUrl: githubUser.avatar_url,
+          email: githubUser.email,
+          name: githubUser.name,
+          username: githubUser.login,
+        },
+      };
+    }
 
-    // const user = await User.findOne({ where: { username: githubUser.login } });
+    return {
+      isRegistered: true,
+      user,
+    };
   }
 }
