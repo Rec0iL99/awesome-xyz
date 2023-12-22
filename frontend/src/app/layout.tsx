@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Theme } from "@radix-ui/themes";
+import { NavBar } from "../modules/NavBar";
 import "@radix-ui/themes/styles.css";
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Theme accentColor="cyan" grayColor="sand" radius="large" scaling="95%">
+          <NavBar />
           {children}
         </Theme>
       </body>

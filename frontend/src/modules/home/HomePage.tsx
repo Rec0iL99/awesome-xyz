@@ -1,9 +1,3 @@
-import { GitHubAuthButtonController } from "./GitHubAuthButtonController";
-
 export const HomePage: React.FC = () => {
-  return (
-    <div>
-      <GitHubAuthButtonController />
-    </div>
-  );
+  return <div>HomePage</div>;
 };
