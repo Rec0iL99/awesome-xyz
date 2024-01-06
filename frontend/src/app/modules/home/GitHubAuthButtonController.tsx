@@ -1,4 +1,4 @@
-import { Button } from "@/components/Button";
+import { Button } from "@/app/components/Button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 

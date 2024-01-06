@@ -5,6 +5,7 @@ import {
   InputType,
   Mutation,
   ObjectType,
+  Query,
   Resolver,
 } from "type-graphql";
 import { User } from "../entities/User";
@@ -80,7 +81,7 @@ class AuthResponse {
 
 @Resolver(User)
 export class UserResolver {
-  @Mutation(() => AuthResponse)
+  @Query(() => AuthResponse)
   async auth(
     @Arg("githubCode")
     code: string,

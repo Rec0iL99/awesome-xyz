@@ -1,0 +1,15 @@
+query Auth($githubCode: String!) {
+  auth(githubCode: $githubCode) {
+    isRegistered
+    githubUser {
+      username
+      name
+      githubProfile
+      avatarUrl
+    }
+    user {
+      id
+      username
+    }
+  }
+}
