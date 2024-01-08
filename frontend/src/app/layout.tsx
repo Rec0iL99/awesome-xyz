@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { Theme } from "@radix-ui/themes";
-import { NavBar } from "./modules/NavBar";
+import { NavBar } from "../modules/NavBar";
 import { __prod__ } from "@/utils/constants";
-import { ApolloWrapper } from "./ApolloWrapper";
-import "@radix-ui/themes/styles.css";
+import { ApolloWrapper } from "../utils/ApolloWrapper";
 
 export const metadata: Metadata = {
   title: "awesome-xyz",
@@ -18,12 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Theme accentColor="cyan" grayColor="sand" radius="large" scaling="95%">
-          <ApolloWrapper>
-            <NavBar />
-            {children}
-          </ApolloWrapper>
-        </Theme>
+        <ApolloWrapper>
+          <NavBar />
+          {children}
+        </ApolloWrapper>
       </body>
     </html>
   );
